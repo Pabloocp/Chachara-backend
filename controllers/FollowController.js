@@ -54,12 +54,12 @@ const following = async(req,res) => {
     let itemsPerpage = 10
     try {
         const finded = await followService.find(identityID,page,itemsPerpage);
-        const num = finded.length;
-
+        const num = await followService.count(identityID);
+      
         const followUserIds = await followService.followUserIds(req.user.id)
         return res.status(200).json({ status: "success", 
         message: "La gente que sigo" ,
-        finded,
+        finded:finded,
         following:finded.length, 
         identity:req.user,
         num,pages:Math.ceil(num/itemsPerpage),
@@ -84,7 +84,7 @@ const followers = async(req,res) => {
     let itemsPerpage = 10
     try {
         const finded = await followService.findFollowed(identityID,page,itemsPerpage);
-        const num = finded.length;
+        const num = await followService.countFollowed(identityID);
 
         const followUserIds = await followService.followUserIds(req.user.id)
         return res.status(200).json({ status: "success", 

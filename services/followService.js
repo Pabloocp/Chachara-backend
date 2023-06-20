@@ -5,9 +5,13 @@ import paginate from 'mongoose-pagination';
 const save = async (data) => {
     return await data.save()
 }
-const find = async(id,page,ipagen) => await Follow.find({user:id}).populate("user followed", "name nick bio").paginate(page,ipagen)
+const find = async(id,page,ipagen) => await Follow.find({user:id}).populate("user followed", "name nick bio image").paginate(page,ipagen)
 
-const findFollowed = async(id,page,ipagen) => await Follow.find({followed:id}).populate("user followed", "name nick bio").paginate(page,ipagen)
+const count = async(id) => await Follow.find({ user: id }).countDocuments();
+
+const countFollowed = async(id) => await Follow.find({ followed: id }).countDocuments();
+
+const findFollowed = async(id,page,ipagen) => await Follow.find({followed:id}).populate("user followed", "name nick bio image").paginate(page,ipagen)
 
 const deletefollow = async(userid,myid) =>await Follow.deleteMany({ user: myid, followed: userid })
 
@@ -45,4 +49,4 @@ const followThisUser = async(userID,profileID) => {
         follower
     }
 }
-export {save,find,deletefollow,followThisUser,followUserIds,findFollowed}
+export {save,find,deletefollow,followThisUser,followUserIds,findFollowed,count,countFollowed}

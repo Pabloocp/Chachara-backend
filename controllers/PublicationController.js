@@ -69,7 +69,7 @@ const listUserPubli = async(req,res) => {
         //solo podemos eliminar nuestras propias publicaciones
         const publication = await publicatioService.findByUserId(id,page,itemsPerpage)
         if(publication.length <= 0){
-            return res.status(200).json({ status: "success",user:user ,message:  "No hay publicaciones subidas"})
+            return res.status(200).json({ status: "success",user:user ,message:  "No hay publicaciones subidas",publication})
         }
         const tamaño =  await publicatioService.countUserPubli(id);
         const totalPages = Math.ceil(tamaño / itemsPerpage);
@@ -133,7 +133,7 @@ const feed = async (req,res) =>{
         const publicaciones = await publicatioService.findByUserId(myFollows.followingClean,page,itemsPerpage)
         const tamaño =  await publicatioService.countUserPubli(myFollows.followingClean);
         const totalPages = Math.ceil(tamaño / itemsPerpage);
-        return res.status(200).send({ status: "success",message:"Feed de publicaciones",myFollows:myFollows.followingClean,publicaciones:publicaciones,tamaño,totalPages})
+        return res.status(200).send({ status: "success",message:"Feed de publicaciones",myFollows:myFollows.followingClean,publication:publicaciones,tamaño,totalPages})
         
     } catch (error) {
         return res.status(500).send({ status: "error",message:"No se han listado bien tu feed"})

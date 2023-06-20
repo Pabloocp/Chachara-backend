@@ -42,7 +42,7 @@ const logIn = async(req,res) => {
    if(!validPassword){
     return res.status(400).json({ status: "error", message: "Contraseña incorrecta" })
    }
-   return res.status(200).json({ status: "success", message: "Log in" , user:{id:userLogged._id,name:userLogged.name,token:jwt.createToken(userLogged)}})
+   return res.status(200).json({ status: "success", message: "Log in" , user:{id:userLogged._id,name:userLogged.name,nick:userLogged.nick},token:jwt.createToken(userLogged)})
 
 }
 
@@ -106,12 +106,12 @@ const update = async (req,res) =>{
     delete usertoUpdate.image;
     const nickExists = await userService.findBynick(usertoUpdate.nick)
     const emailExists = await userService.findByemail(usertoUpdate.email)
-    if(nickExists){
-        return res.status(404).send({ status: "error", message: "Nick no disponible" })
+    console.log(usertoUpdate.nick)
+    console.log(usertoIdentity.nick)
+    if(usertoUpdate.nick!=usertoIdentity.nick || usertoUpdate.email!=usertoIdentity.email){
+        if(nickExists) return res.status(404).send({ status: "error", message: "Nick no disponible" })
     }
-    if(emailExists){
-        return res.status(404).send({ status: "error", message: "Ya existe alguien registrado con este e-mail" })
-    }
+    
     if(usertoUpdate.password){
         let pwd = await bcrypt.hash(usertoUpdate.password,10)
         usertoUpdate.password= pwd
@@ -121,7 +121,7 @@ const update = async (req,res) =>{
     const update = await userService.update(usertoIdentity.id,usertoUpdate);
     console.log(update)
     if(update){
-        return res.status(200).send({ status: "success", usertoUpdate ,message:"usuario actualizado"})
+        return res.status(200).send({ status: "success", user:update ,message:"usuario actualizado"})
     }else{
         return res.status(400).send({ status: "error",message:"error al actualizar usuario"})
     }
@@ -147,7 +147,7 @@ const upload = async (req,res) =>{
     if(updateUser){
         //buscamos el usuario actualizado en la base de datos
         const updatedUser = await userService.findById(req.user.id);
-        return res.status(200).send({ status: "sucess",message:"Imagen subida",user:updatedUser})
+        return res.status(200).send({ status: "success",message:"Imagen subida",user:updatedUser})
     }else{
         return res.status(500).send({ status: "error",message:"Error al subir la imagen"})
     }

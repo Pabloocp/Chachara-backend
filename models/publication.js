@@ -3,7 +3,8 @@ import { model, Schema } from "mongoose";
 const PublicationSchema = Schema({
     user: { type: Schema.ObjectId, ref: "User"},
     text: { type: String,required:true},
-    file: {type:String}},
+    file: {type:String},
+    rate: {type:Number}},
     {
       timestamps: true,
       versionKey: false,

@@ -8,7 +8,7 @@ let userchema = new Schema(
     name: { type: String, required: true },
     surname: { type: String, required: true },
     nick: { type: String, required: true, unique: true },
-    bio: {type : String},
+    bio: {type : String, default:""},
     email: {
       type: String,
       required: true,

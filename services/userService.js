@@ -4,7 +4,7 @@ import paginate from 'mongoose-pagination';
 
 const findAll = async() => await User.find()
 
-const findPage = async(page,itemsPerpage) => await User.find().sort('_id').paginate(page,itemsPerpage).select("name surname nick image createdAt")
+const findPage = async(page,itemsPerpage) => await User.find().sort('_id').paginate(page,itemsPerpage).select("name surname nick image createdAt bio")
 
 const countUsers = async () => {
   try {
@@ -17,7 +17,7 @@ const countUsers = async () => {
 const findById = async(id) => await User.findById(id)
 
 const findByIdProfile = async (id) => {
-    return await User.findById(id).select("-rol -email");
+    return await User.findById(id).select("-rol ");
   };
 
 const findByemail = async(e) => await User.findOne({email:e}).select('+password')
